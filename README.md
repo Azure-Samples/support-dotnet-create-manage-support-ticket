@@ -18,15 +18,15 @@ Guidance on onboarding samples to docs.microsoft.com/samples: https://review.doc
 Taxonomies for products and languages: https://review.docs.microsoft.com/new-hope/information-architecture/metadata/taxonomies?branch=master
 -->
 
-Give a short description for your sample here. What does it do and why is it important?
+This reposistory contains one or more sample projects/code that uses one of azure support api interfaces that are publicly available. (e.g. c# sdk)
 
 ## Contents
 
-Outline the file contents of the repository. It helps users navigate the codebase, build configuration and any related assets.
+High level description of contents in this repository
 
 | File/folder       | Description                                |
 |-------------------|--------------------------------------------|
-| `src`             | Sample source code.                        |
+| `sdk-csharp-dotnet`             | Sample source using c# sdk based on .net core.                        |
 | `.gitignore`      | Define what to ignore at commit time.      |
 | `CHANGELOG.md`    | List of changes to the sample.             |
 | `CONTRIBUTING.md` | Guidelines for contributing to the sample. |
@@ -35,19 +35,37 @@ Outline the file contents of the repository. It helps users navigate the codebas
 
 ## Prerequisites
 
-Outline the required components and tools that a user might need to have on their machine in order to run the sample. This can be anything from frameworks, SDKs, OS versions or IDE releases.
+### sdk-csharp-dotnet
+
+1. IDE like visual studio that can build .net core based c# projects.
+2. ARMClient https://github.com/projectkudu/ARMClient or any other equivalent code that would help generate auth token for arm rest api.
+3. Subscription ID
 
 ## Setup
 
-Explain how to prepare the sample once the user clones or downloads the repository. The section should outline every step necessary to install dependencies and set up any settings (for example, API keys and output folders).
+### sdk-csharp-dotnet 
+
+1. Open the solution file in your IDE.
+2. Search for couple of `<TODO:` in the code and replace them with appropriate values based on the guidance in the comments.
+3. Run the nuget restore in the project directory (https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-restore) from command line orusing IDE's integrated options. 
+4. Build the solution and make sure there were no build errors.
 
 ## Running the sample
 
-Outline step-by-step instructions to execute the sample and see its output. Include steps for executing the sample from the IDE, starting specific services in the Azure portal or anything related to the overall launch of the code.
+### sdk-csharp-dotnet
+
+You can either run `release` version of the binaries or do the live debugging using `debug` version of the compiled code.
+
+For running release variant binaries, you would need to package them correctly and run on any operating system. For more information refer https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-run
+
+For testing the code, you can run debug variant binaries from your IDE, set up break point and do step by step debugging as needed.
 
 ## Key concepts
 
-Provide users with more context on the tools and services used in the sample. Explain some of the code that is being used and how services interact with each other.
+### sdk-csharp-dotnet 
+
+This sample is a console app built using .net core 3.1 in C# language. It mainly contains two source files. `CustomLoginCredentials` contains high level auth logic that is used with every call made by the client. `Program.cs` contains the logic of creating a single client for Microsoft.Azure.Management.Support SDK and calling appropriate support api management operations based on the console option selection from the user. You can refer to     // Reference: https://docs.microsoft.com/en-us/dotnet/api/overview/azure/supportability?view=azure-dotnet
+for more information on supported operations in our sdk.
 
 ## Contributing
 
