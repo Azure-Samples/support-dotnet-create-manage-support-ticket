@@ -93,9 +93,9 @@ namespace AzureSupportDotnetCoreConsoleDemo
         {
             Console.WriteLine("");
             Console.WriteLine("1. Get list of tickets that are in open state from past week"+ OPTIONSSUFFIX);
-            Console.WriteLine("2. Create vm cores quota automation support ticket and add communication" + OPTIONSSUFFIX);
-            Console.WriteLine("3. Create billing support ticket and update severity"+ OPTIONSSUFFIX);
-            Console.WriteLine("4. Create subscription management support ticket and update additional contact details" + OPTIONSSUFFIX);
+            Console.WriteLine("2. Create Compute VM cores support ticket and add new communication to the ticket" + OPTIONSSUFFIX);
+            Console.WriteLine("3. Create Billing support ticket and update severity"+ OPTIONSSUFFIX);
+            Console.WriteLine("4. Create Subscription management support ticket and update additional contact details" + OPTIONSSUFFIX);
             Console.WriteLine("5. Exit");
             Console.WriteLine("");
         }
