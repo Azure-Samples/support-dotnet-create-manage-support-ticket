@@ -28,6 +28,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Type = Microsoft.Azure.Management.Support.Models.Type;
 
 namespace AzureSupportDotnetCoreConsoleDemo
@@ -41,7 +42,7 @@ namespace AzureSupportDotnetCoreConsoleDemo
         private const string SUBID = "<TODO: Replace with your actual subscription ID>";
         private const string TICKETNAMEPREFIX = "ApiDemoConsoleApp_{0}_{1}";
         private const string OPTIONSSUFFIX = " for the subscription " + SUBID;
-        private const string ERRORMSG = "\nSome error occured! Please file an issue if you think there is an issue with the original code.";
+        private const string ERRORMSG = "\nSome error occured! Please file a github issue if you think there is an issue with the original code.";
         private static CustomLoginCredentials serviceClientCredentials;
         private static MicrosoftSupportClient supportClient;
 
@@ -54,17 +55,22 @@ namespace AzureSupportDotnetCoreConsoleDemo
             supportClient.SubscriptionId = SUBID;
 
             // Setup options
+            Console.WriteLine("");
+            Console.WriteLine("");
             Console.WriteLine("Welcome to Azure Support sample console app. Make sure to provide auth token and subscription id before running the app!");
-            ConsoleKeyInfo cki;
+            Console.WriteLine("");
+            ConsoleKeyInfo option;
             var cycleOptions = true;
             do
             {
                 DisplayOptions();
-                cki = Console.ReadKey(false);
-                switch (cki.KeyChar.ToString())
+                option = Console.ReadKey(false);
+                while(Console.ReadKey(true).Key != ConsoleKey.Enter) { continue; }
+                Console.WriteLine("");
+                switch (option.KeyChar.ToString())
                 {
                     case "1":
-                        GetSupportTicketList(filter: "status eq 'Open' and CreatedDate gt "+DateTime.UtcNow.AddDays(-7).ToString("o"));
+                        GetSupportTicketList(filter: "status eq 'Open' and CreatedDate gt " + DateTime.UtcNow.AddDays(-7).ToString("o"));
                         break;
 
                     case "2":
@@ -80,24 +86,37 @@ namespace AzureSupportDotnetCoreConsoleDemo
                         break;
 
                     case "5":
+                        ExecuteOption5();
+                        break;
+
+                    case "6":
                         cycleOptions = false;
                         break;
 
                     default:
                         break;
                 }
-            } while (cki.Key != ConsoleKey.Escape && cycleOptions);
+            } while (option.Key != ConsoleKey.Escape && cycleOptions);
         }
 
         private static void DisplayOptions()
         {
             Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("=== Create and manage support tickets using Support API ===");
+            Console.WriteLine("===========================================================");
+            Console.WriteLine("");
             Console.WriteLine("1. Get list of tickets that are in open state from past week"+ OPTIONSSUFFIX);
             Console.WriteLine("2. Create Compute VM cores support ticket and add new communication to the ticket" + OPTIONSSUFFIX);
             Console.WriteLine("3. Create Billing support ticket and update severity"+ OPTIONSSUFFIX);
             Console.WriteLine("4. Create Subscription management support ticket and update additional contact details" + OPTIONSSUFFIX);
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("5. Create Technical support ticket for CosmosDb throttling issue" + OPTIONSSUFFIX);
+            Console.WriteLine("6. Exit");
             Console.WriteLine("");
+            Console.WriteLine("");
+            Console.Write("Enter your choice (1-6): ");
+            Console.WriteLine("");
+            Thread.Sleep(1000);
         }
 
         // Option 1: Get List of support tickets
@@ -362,6 +381,75 @@ namespace AzureSupportDotnetCoreConsoleDemo
 
 
                 //  6. Close the support ticket
+                UpdateSupportTicketStatus(randomTicketName, "closed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ERRORMSG);
+                Console.WriteLine(JsonConvert.SerializeObject(ex, Formatting.Indented));
+            }
+        }
+
+        // Option 5: 
+        //  1. Call services list api and find technical cosmos db service name
+        //  2. Call problem classification list api and find throttling problem classification name
+        //  3. Create random ticket name and call check name availability
+        //  4. Create support ticket 
+        //  5. Close the support ticket
+        private static void ExecuteOption5()
+        {
+            try
+            {
+
+
+                //  1.Call services list api and find quota service name
+                var rsp1 = GetServiceList();
+                var serviceName = string.Empty;
+                foreach (var service in rsp1)
+                {
+                    if (service.DisplayName.ToLower().Contains("cosmos db"))
+                    {
+                        serviceName = service.Name;
+                        break;
+                    }
+                }
+
+
+                //  2. Call problem classification list api and find cores problem classification name
+                var rsp2 = GetProblemClassificationList(serviceName);
+                var problemClassificationName = string.Empty;
+                foreach (var problemClassification in rsp2)
+                {
+                    if (problemClassification.DisplayName.ToLower().Contains("throttling"))
+                    {
+                        problemClassificationName = problemClassification.Name;
+                        break;
+                    }
+                }
+
+
+                //  3.Create random ticket name and call check name availability until unique name is not found
+                var rsp3 = true;
+                var randomTicketName = string.Empty;
+                do
+                {
+                    randomTicketName = string.Format(TICKETNAMEPREFIX, DateTime.Today.ToString("%d_%M_%y"), new Random().Next(0, 10).ToString());
+                    rsp3 = CheckNameAvailability("", new CheckNameAvailabilityInput()
+                    {
+                        Name = randomTicketName,
+                        Type = Type.MicrosoftSupportSupportTickets
+                    });
+                } while (!rsp3);
+
+
+                //  4. Create support ticket
+                var inputPayload = GenerateCreateSupportTicketPayload();
+                inputPayload.ServiceId = "/providers/Microsoft.Support/services/" + serviceName;
+                inputPayload.ProblemClassificationId = "/providers/Microsoft.Support/services/" + serviceName + "/problemClassifications/" + problemClassificationName;
+                CreateSupportTicket(randomTicketName, inputPayload);
+
+
+                //  5. Close the support ticket
                 UpdateSupportTicketStatus(randomTicketName, "closed");
             }
             catch (Exception ex)

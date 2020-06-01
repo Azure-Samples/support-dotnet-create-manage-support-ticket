@@ -35,9 +35,10 @@ High level description of contents in this repository
 
 ### sdk-csharp-dotnet
 
-1. IDE like Visual Studio that can build .NET core based c# projects.
-2. ARMClient https://github.com/projectkudu/ARMClient or any other equivalent code that would help generate auth token for ARM rest api.
-3. Azure subscription ID
+1. .NET core 2.1 or above. (We recommend .NET core 3.1 or above. You would need to downgrade project configuration to use version below 3.1. .NET core can be downloaded from https://dotnet.microsoft.com/download/dotnet-core)
+2. IDE like Visual Studio that can build .NET core based c# projects.
+3. ARMClient (https://github.com/projectkudu/ARMClient) or Azure CLI (https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli?view=azure-cli-latest and https://docs.microsoft.com/en-us/cli/azure/account?view=azure-cli-latest#az-account-get-access-token) or any other equivalent code that would help generate auth token for ARM rest api.
+4. Azure subscription ID
 
 ## Setup
 
@@ -62,7 +63,13 @@ For testing the code, you can run debug variant binaries from your IDE, set up b
 
 ### sdk-csharp-dotnet 
 
-This sample is a console app built using .NET core 3.1 in C# language and contains two source files. `CustomLoginCredentials` contains high level auth logic that is used with every call made by the client. `Program.cs` contains the logic of creating a single client for Microsoft.Azure.Management.Support SDK and calling appropriate Support API management operations based on the console option selection from the user. You can refer to // Reference: https://docs.microsoft.com/dotnet/api/overview/azure/supportability?view=azure-dotnet for more information on supported operations in our sdk.
+This sample is a console app built using .NET core 3.1 in C# language and contains two source files.
+
+`CustomLoginCredentials` contains high level auth logic that is used with every call made by the client.
+
+`Program.cs` contains the logic of creating a single client for Microsoft.Azure.Management.Support SDK and calling appropriate Support API management operations based on the console option selection from the user.
+
+Refer to https://docs.microsoft.com/dotnet/api/overview/azure/supportability?view=azure-dotnet for more information on supported operations in our sdk.
 
 ## Contributing
 
