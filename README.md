@@ -26,7 +26,7 @@ High level description of contents in this repository
 
 | File/folder       | Description                                |
 |-------------------|--------------------------------------------|
-| `sdk-csharp-dotnet`             | Sample source using c# sdk based on .net core.                        |
+| `sdk-csharp-dotnet`             | Sample source using C# SDK based on .NET core.                        |
 | `.gitignore`      | Define what to ignore at commit time.      |
 | `CHANGELOG.md`    | List of changes to the sample.             |
 | `CONTRIBUTING.md` | Guidelines for contributing to the sample. |
