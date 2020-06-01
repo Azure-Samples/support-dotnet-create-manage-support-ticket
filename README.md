@@ -69,7 +69,7 @@ This sample is a console app built using .NET core 3.1 in C# language and contai
 
 `Program.cs` contains the logic of creating a single client for Microsoft.Azure.Management.Support SDK and calling appropriate Support API management operations based on the console option selection from the user.
 
-Refer to https://docs.microsoft.com/dotnet/api/overview/azure/supportability?view=azure-dotnet for more information on supported operations in our sdk.
+For more information, refer https://docs.microsoft.com/dotnet/api/overview/azure/supportability?view=azure-dotnet
 
 ## Contributing
 
