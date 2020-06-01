@@ -45,7 +45,7 @@ High level description of contents in this repository
 
 1. Open the solution file in your IDE.
 2. Search for `<TODO:` in the code and replace them with appropriate values based on the guidance in the comments - namely, Azure Subscription Id and Auth token. 
-3. Run the NuGet restore in the project directory (https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-restore) from command line or using IDE's integrated options. 
+3. Run the NuGet restore in the project directory (https://docs.microsoft.com/dotnet/core/tools/dotnet-restore) from command line or using IDE's integrated options. 
 4. Build the solution and make sure there are no build errors.
 
 ## Running the sample
@@ -54,7 +54,7 @@ High level description of contents in this repository
 
 You can either run `release` version of the binaries or do the live debugging using `debug` version of the compiled code.
 
-For running release variant binaries, you would need to package them correctly and run on any operating system. For more information refer https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-run
+For running release variant binaries, you would need to package them correctly and run on any operating system. For more information refer https://docs.microsoft.com/dotnet/core/tools/dotnet-run
 
 For testing the code, you can run debug variant binaries from your IDE, set up break point and do step by step debugging as needed.
 
